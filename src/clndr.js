@@ -123,6 +123,8 @@
             past: "past",
             today: "today",
             event: "event",
+            event_start: "event-start",
+            event_end: "event-end",
             inactive: "inactive",
             selected: "selected",
             lastMonth: "last-month",
@@ -579,6 +581,8 @@
             self = this,
             now = moment(),
             eventsToday = [],
+            eventsStartingToday = [],
+            eventsEndingToday = [],
             extraClasses = "",
             properties = {
                 isToday: false,
@@ -604,6 +608,11 @@
             if ( (day.isSame(start, 'day') || day.isAfter(start, 'day'))
                 && (day.isSame(end, 'day') || day.isBefore(end, 'day')) )
             {
+                if (day.isSame(start, 'day')){
+                    eventsStartingToday.push(monthEvents[j]);
+                } else if (day.isSame(end, 'day')){
+                    eventsEndingToday.push(monthEvents[j]);
+                }  
                 eventsToday.push( monthEvents[j] );
             }
         }
@@ -619,6 +628,14 @@
 
         if (eventsToday.length) {
             extraClasses += (" " + this.options.classes.event);
+        }
+
+        if (eventsStartingToday.length) {
+            extraClasses += (" " + this.options.classes.event_start);
+        }
+
+        if (eventsEndingToday.length) {
+            extraClasses += (" " + this.options.classes.event_end);
         }
 
         if (!this.options.lengthOfTime.days) {
